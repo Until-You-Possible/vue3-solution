@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" >
+    <el-form class="login-form" :model="loginForm" :rules="loginRules">
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
@@ -14,6 +14,7 @@
         <el-input
           placeholder="username"
           name="username"
+          v-model="loginForm.username"
           type="text"
         />
       </el-form-item>
@@ -26,7 +27,8 @@
         </span>
         <el-input
           placeholder="password"
-          name="password"
+          v-model="loginForm.password"
+          name="loginForm.password"
         />
         <span class="show-pwd">
           <el-icon>
@@ -45,10 +47,34 @@
 <script setup>
 // 导入组件之后无需注册可直接使用
 import { Avatar } from '@element-plus/icons'
-import {} from 'vue'
+import { ref } from 'vue'
+import { validatePassword } from "./rules.js"
+const loginForm = ref({
+  username: "super-admin",
+  password: "123456"
+});
+// 验证规则
+const loginRules = ref({
+  username: [
+    {
+      required: true,
+      trigger: "blur",
+      message: "用户名必须填写"
+    }
+  ],
+  password: [
+    {
+      required: true,
+      trigger: "blur",
+      validator: validatePassword()
+    }
+  ]
+});
+
 </script>
 
 <style lang="scss" scoped>
+
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
